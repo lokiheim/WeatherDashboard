@@ -9,7 +9,7 @@ const desc = document.querySelector(".description");
 const humi = document.querySelector(".humidity");
 const win = document.querySelector(".wind");
 const searchBtn = document.querySelector(".search-button");
-
+const fiveDaysEl = document.querySelector(".fiveDay");
 function getWeather(userInput) {
   let weather_result = fetch(
     "https://api.openweathermap.org/geo/1.0/direct?q=" +
@@ -38,21 +38,42 @@ function getWeather(userInput) {
           return response.json();
         })
         .then(function (data) {
+          console.log(data.list);
           const currentDay = data.list[0];
           const currentTemp = currentDay.main.temp;
           const currentIcon = currentDay.weather[0].icon;
           const currentHumi = currentDay.main.humidity;
           const currentWind = currentDay.wind.speed;
           getCity.textContent = `Weather in ${cityName}`;
-          temperature.textContent = currentTemp;
+          temperature.textContent = `Current temperature:${currentTemp} °C`;
           ico.setAttribute(
             "src",
             `http://openweathermap.org/img/w/${currentIcon}.png`
           );
-          humi.textContent = currentHumi;
-          win.textContent = currentWind;
+          humi.textContent = `Humidity is currently: ${currentHumi}`;
+          win.textContent = `Windspeeds of ${currentWind}`;
+          for (let i = 8; i < data.list.length; i += 8) {
+            const eachDay = data.list[i];
+            const card = document.createElement("div");
+            const day = document.createElement("h2");
+            const temp = document.createElement("p");
+            const humdi = document.createElement("p");
+            const wind = document.createElement("p");
+            const icon = document.createElement("img");
 
-          console.log(currentIcon);
+            day.textContent = eachDay.dt_txt;
+            temp.textContent = `Temperature: ${eachDay.main.temp}°C`;
+            humdi.textContent = `Humidity: ${eachDay.main.humidity}`;
+            wind.textContent = `Windspeed: ${eachDay.wind.speed}°C`;
+            icon.setAttribute(
+              "src",
+              `http://openweathermap.org/img/w/${eachDay.weather[0].icon}.png`
+            );
+
+            console.log(eachDay);
+            card.append(day, temp, humdi, wind, icon);
+            fiveDaysEl.append(card);
+          }
         });
     });
 }
@@ -61,8 +82,9 @@ searchBtn.addEventListener("click", function (event) {
   event.preventDefault();
   console.log("test");
 
-  var userInput = getWeather(userInput); //"this is where you put the input you targeted";
-  //you want ot grab the input box
+  const userInput = document.getElementById("search-input").value;
+  getWeather(userInput);
+  //you want to grab the input box
 });
 
 // When the user clicks on the submit button, it should grab the user's city name and input it into the fetch
