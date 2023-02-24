@@ -16,6 +16,10 @@ any modern web browsers should work
 
 ## ScreenShot and Links
 
+Screenshot:
+![Weather Dashboard - lokiheim github io](https://user-images.githubusercontent.com/115110121/221245185-a4598422-bd2c-460d-b011-ee65fed6e73d.png)
+
+
 Weather (5 day ) App links are:
 
 Deployed site:
